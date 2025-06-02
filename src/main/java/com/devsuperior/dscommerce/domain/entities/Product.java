@@ -1,15 +1,16 @@
 package com.devsuperior.dscommerce.domain.entities;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@Table(name = "TBL_USER")
-public class User {
+@Table(name = "TBL_PRODUCT")
+public class Product {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,17 +32,20 @@ public class User {
     private Long id;
     private String name;
 
-    @Column(unique = true)
-    private String email;
-    private String phone;
-    private LocalDate birthDate;
-    private String password;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    private Double price;
+    private String imgUrl;
 
-    @OneToMany(mappedBy = "client")
-    private final List<Order> orders = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+        name = "TBL_PRODUCT_CATEGORY",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private final Set<Category> categories = new HashSet<>();
 
-    public List<Order> getOrders() {
-        return List.copyOf(orders);
+    public Set<Category> getCategories() {
+        return Set.copyOf(categories);
     }
-    
+
 }
