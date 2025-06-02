@@ -1,14 +1,16 @@
 package com.devsuperior.dscommerce.domain.entities;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
+import com.devsuperior.dscommerce.domain.enums.OrderStatus;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,24 +23,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@Table(name = "TBL_USER")
-public class User {
+@Table(name = "TBL_ORDER")
+public class Order {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private String email;
-    private String phone;
-    private LocalDate birthDate;
-    private String password;
 
-    @OneToMany(mappedBy = "client")
-    private final List<Order> orders = new ArrayList<>();
+    // So it gets stored as UTC time zone
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant moment;
+    private OrderStatus status;
 
-    public List<Order> getOrders() {
-        return List.copyOf(orders);
-    }
-    
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private User client;
+
 }
