@@ -32,8 +32,4 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private final Set<Product> products = new HashSet<>();
 
-    public Set<Product> getProducts() {
-        return Set.copyOf(products);
-    }
-
 }

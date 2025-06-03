@@ -1,6 +1,9 @@
 package com.devsuperior.dscommerce.domain.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.devsuperior.dscommerce.domain.enums.OrderStatus;
 
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -44,5 +48,14 @@ public class Order {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
+
+    @OneToMany(mappedBy = "id.order")
+    private final Set<OrderItem> items = new HashSet<>();
+
+    public List<Product> getProducts() {
+        return items.stream()
+            .map(OrderItem::getProduct)
+            .toList();
+    }
 
 }

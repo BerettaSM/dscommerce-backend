@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.domain.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,8 +46,13 @@ public class Product {
         inverseJoinColumns = @JoinColumn(name = "category_id"))
     private final Set<Category> categories = new HashSet<>();
 
-    public Set<Category> getCategories() {
-        return Set.copyOf(categories);
-    }
+    @OneToMany(mappedBy = "id.product")
+    private final Set<OrderItem> items = new HashSet<>();
 
+    public List<Order> getOrders() {
+        return items.stream()
+            .map(OrderItem::getOrder)
+            .toList();
+    }
+    
 }
