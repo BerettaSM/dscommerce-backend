@@ -31,4 +31,9 @@ public class ProductService {
             .map(ProductDTO::from);
     }
 
+    @Transactional
+    public ProductDTO save(ProductDTO dto) {
+        return ProductDTO.from(productRepository.save(dto.toEntity()));
+    }
+
 }
