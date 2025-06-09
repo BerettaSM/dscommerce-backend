@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dscommerce.domain.dto.ProductDTO;
+import com.devsuperior.dscommerce.domain.entities.Product;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,20 @@ public class ProductService {
     @Transactional
     public ProductDTO save(ProductDTO dto) {
         return ProductDTO.from(productRepository.save(dto.toEntity()));
+    }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductDTO dto) {
+        Product product = productRepository.getReferenceById(id);
+        copyDtoToEntity(dto, product);
+        return ProductDTO.from(productRepository.save(product));
+    }
+
+    private void copyDtoToEntity(ProductDTO dto, Product product) {
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setPrice(dto.price());
+        product.setImgUrl(dto.imgUrl());
     }
 
 }

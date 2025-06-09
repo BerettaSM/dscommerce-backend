@@ -19,6 +19,8 @@ import com.devsuperior.dscommerce.domain.dto.ProductDTO;
 import com.devsuperior.dscommerce.services.ProductService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping(path = "/products",
@@ -47,6 +49,11 @@ public class ProductController {
             .buildAndExpand(saved.id())
             .toUri();
         return ResponseEntity.created(location).body(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+        return ResponseEntity.ok(productService.update(id, dto));
     }
     
 }
