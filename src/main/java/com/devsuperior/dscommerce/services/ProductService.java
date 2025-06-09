@@ -14,8 +14,9 @@ import com.devsuperior.dscommerce.repositories.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
+@Transactional
 public class ProductService {
     
     private final ProductRepository productRepository;
@@ -32,16 +33,18 @@ public class ProductService {
             .map(ProductDTO::from);
     }
 
-    @Transactional
     public ProductDTO save(ProductDTO dto) {
         return ProductDTO.from(productRepository.save(dto.toEntity()));
     }
 
-    @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
         Product product = productRepository.getReferenceById(id);
         copyDtoToEntity(dto, product);
         return ProductDTO.from(productRepository.save(product));
+    }
+
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product product) {
