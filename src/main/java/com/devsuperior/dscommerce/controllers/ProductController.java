@@ -19,16 +19,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.devsuperior.dscommerce.domain.dto.ProductDTO;
 import com.devsuperior.dscommerce.services.ProductService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
-@RequestMapping(path = "/products",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductController {
-    
+
     private final ProductService productService;
 
     @GetMapping(path = "/{id}")
@@ -42,11 +41,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ProductDTO> save(
+            @RequestBody ProductDTO dto,
+            UriComponentsBuilder uriBuilder,
+            HttpServletRequest request) {
         ProductDTO saved = productService.save(dto);
-        URI location = uriBuilder.path("products/{id}")
-            .buildAndExpand(saved.id())
-            .toUri();
+        URI location = uriBuilder.path("{path}/{id}")
+                .buildAndExpand(request.getRequestURI(), saved.id())
+                .toUri();
         return ResponseEntity.created(location).body(saved);
     }
 
