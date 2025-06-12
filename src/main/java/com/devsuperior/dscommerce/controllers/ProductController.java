@@ -20,6 +20,7 @@ import com.devsuperior.dscommerce.domain.dto.ProductDTO;
 import com.devsuperior.dscommerce.services.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -42,7 +43,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDTO> save(
-            @RequestBody ProductDTO dto,
+            @RequestBody @Valid ProductDTO dto,
             UriComponentsBuilder uriBuilder,
             HttpServletRequest request) {
         ProductDTO saved = productService.save(dto);
@@ -53,7 +54,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody @Valid ProductDTO dto) {
         return ResponseEntity.ok(productService.update(id, dto));
     }
 
