@@ -2,13 +2,20 @@ package com.devsuperior.dscommerce.domain.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -23,7 +30,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @Table(name = "TBL_USER")
-public class User {
+public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +47,24 @@ public class User {
     @OneToMany(mappedBy = "client")
     private final List<Order> orders = new ArrayList<>();
 
-    public List<Order> getOrders() {
-        return List.copyOf(orders);
+    @ManyToMany
+    @JoinTable(
+        name = "TBL_USER_ROLE",
+        joinColumns = @JoinColumn(name = "USER_ID"),
+        inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    private final Set<Role> authorities = new HashSet<>();
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    public void addRole(Role role) {
+        authorities.add(role);
+    }
+
+    public boolean hasRole(String roleName) {
+        return authorities.contains(new Role(null, roleName));
     }
     
 }
