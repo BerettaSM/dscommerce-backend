@@ -27,7 +27,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @EqualsAndHashCode.Include
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String authority;
     
 }
