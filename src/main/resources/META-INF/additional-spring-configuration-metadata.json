@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "security.client-id",
+    "type": "java.lang.String",
+    "description": "The OAuth2 client id"
+  },
+  {
+    "name": "security.client-secret",
+    "type": "java.lang.String",
+    "description": "The OAuth2 client secret"
+  },
+  {
+    "name": "security.jwt.duration",
+    "type": "java.lang.String",
+    "description": "The JWT expiration in seconds"
+  },
+  {
+    "name": "cors.origins",
+    "type": "java.lang.String",
+    "description": "The CORS origins"
+  }
+]}
