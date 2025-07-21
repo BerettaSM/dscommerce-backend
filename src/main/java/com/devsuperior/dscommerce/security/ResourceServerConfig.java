@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import com.devsuperior.dscommerce.security.converters.MyPrincipalJwtConverter;
 
 @Configuration
 @EnableWebSecurity
@@ -36,10 +37,11 @@ public class ResourceServerConfig {
     @Order(value = 3)
     SecurityFilterChain resourceServerSecurityFilterChain(
             HttpSecurity http,
-            CorsConfigurationSource corsConfigurationSource) throws Exception {
+            CorsConfigurationSource corsConfigurationSource,
+            MyPrincipalJwtConverter converter) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .oauth2ResourceServer(server -> server.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(server -> server.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable())
                 .build();
