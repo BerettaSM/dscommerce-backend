@@ -54,7 +54,7 @@ public class ProductController {
             HttpServletRequest request) {
         ProductDTO saved = productService.save(dto);
         URI location = uriBuilder.path("{path}/{id}")
-                .buildAndExpand(request.getRequestURI(), saved.id())
+                .buildAndExpand(request.getRequestURI(), saved.getId())
                 .toUri();
         return ResponseEntity.created(location).body(saved);
     }

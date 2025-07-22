@@ -1,23 +1,26 @@
 package com.devsuperior.dscommerce.domain.dto;
 
-import java.io.Serializable;
-
 import com.devsuperior.dscommerce.domain.entities.Product;
 
-public record ProductMinDTO(
-        Long id,
-        String name,
-        Double price,
-        String imgUrl) implements Serializable {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    private static final long serialVersionUID = 1L;
+@AllArgsConstructor
+@Getter
+@NoArgsConstructor
+public class ProductMinDTO {
+
+    private Long id;
+    private String name;
+    private Double price;
+    private String imgUrl;
 
     public ProductMinDTO(Product product) {
-        this(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImgUrl());
+        id = product.getId();
+        name = product.getName();
+        price = product.getPrice();
+        imgUrl = product.getImgUrl();
     }
 
     public static ProductMinDTO from(Product product) {
