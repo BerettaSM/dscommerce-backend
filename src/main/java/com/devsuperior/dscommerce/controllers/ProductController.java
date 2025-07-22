@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.devsuperior.dscommerce.domain.dto.ProductDTO;
+import com.devsuperior.dscommerce.domain.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.security.annotations.AdminOnly;
 import com.devsuperior.dscommerce.services.ProductService;
 
@@ -39,7 +40,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(
+    public ResponseEntity<Page<ProductMinDTO>> findAll(
             @RequestParam(name = "search", required = false, defaultValue = "") String searchTerm,
             Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(searchTerm, pageable));
