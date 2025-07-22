@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.devsuperior.dscommerce.domain.dto.CategoryDTO;
 import com.devsuperior.dscommerce.domain.dto.ProductDTO;
 import com.devsuperior.dscommerce.domain.dto.ProductMinDTO;
+import com.devsuperior.dscommerce.domain.entities.Category;
 import com.devsuperior.dscommerce.domain.entities.Product;
+import com.devsuperior.dscommerce.repositories.CategoryRepository;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.services.exceptions.DatabaseException;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
@@ -21,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class ProductService {
-    
+
+    private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
@@ -39,7 +43,16 @@ public class ProductService {
 
     @Transactional
     public ProductDTO save(ProductDTO dto) {
-        return ProductDTO.from(productRepository.save(dto.toEntity()));
+        Product saved = productRepository.save(dto.toEntity());
+        // Repopulate categories to return them inside response
+        saved.getCategories().clear();
+        categoryRepository.findAllById(
+            dto.getCategories()
+                .stream()
+                .map(CategoryDTO::getId)
+                .toList())
+            .forEach(saved::addCategory);
+        return ProductDTO.from(saved);
     }
 
     @Transactional
@@ -73,6 +86,11 @@ public class ProductService {
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setImgUrl(dto.getImgUrl());
+        product.getCategories().clear();
+        dto.getCategories()
+            .stream()
+            .map(c -> new Category(c.getId(), c.getName()))
+            .forEach(product::addCategory);
     }
 
 }

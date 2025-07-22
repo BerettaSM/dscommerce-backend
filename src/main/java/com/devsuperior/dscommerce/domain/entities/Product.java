@@ -54,5 +54,9 @@ public class Product {
             .map(OrderItem::getOrder)
             .toList();
     }
+
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
     
 }
