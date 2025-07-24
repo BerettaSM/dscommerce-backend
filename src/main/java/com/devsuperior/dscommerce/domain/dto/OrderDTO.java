@@ -8,19 +8,23 @@ import java.util.Optional;
 import com.devsuperior.dscommerce.domain.entities.Order;
 import com.devsuperior.dscommerce.domain.enums.OrderStatus;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@Getter
+@Data
+@NoArgsConstructor
 public class OrderDTO {
 
-    private final Long id;
-    private final Instant moment;
-    private final OrderStatus status;
-    private final ClientDTO client;
-    private final PaymentoDTO payment;
+    private Long id;
+    private Instant moment;
+    private OrderStatus status;
+    private ClientDTO client;
+    private PaymentoDTO payment;
 
+    @NotEmpty(message = "Must have at least one item")
     private final List<OrderItemDTO> items = new ArrayList<>();
 
     public OrderDTO(

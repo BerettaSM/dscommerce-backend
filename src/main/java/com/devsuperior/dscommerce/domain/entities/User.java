@@ -28,10 +28,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Table(name = "TBL_USER")
 public class User implements UserDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -48,10 +48,7 @@ public class User implements UserDetails {
     private final List<Order> orders = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(
-        name = "TBL_USER_ROLE",
-        joinColumns = @JoinColumn(name = "USER_ID"),
-        inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    @JoinTable(name = "TBL_USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private final Set<Role> authorities = new HashSet<>();
 
     @Override
@@ -66,5 +63,5 @@ public class User implements UserDetails {
     public boolean hasRole(String roleName) {
         return authorities.contains(new Role(null, roleName));
     }
-    
+
 }

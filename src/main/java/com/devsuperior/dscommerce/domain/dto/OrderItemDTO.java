@@ -2,22 +2,19 @@ package com.devsuperior.dscommerce.domain.dto;
 
 import com.devsuperior.dscommerce.domain.entities.OrderItem;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class OrderItemDTO {
 
-    private final Long productId;
-    private final String name;
-    private final Double price;
-    private final Integer quantity;
-
-    public OrderItemDTO(Long productId, String name, Double price, Integer quantity) {
-        this.productId = productId;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-    }
+    private Long productId;
+    private String name;
+    private Double price;
+    private Integer quantity;
 
     public OrderItemDTO(OrderItem orderItem) {
         productId = orderItem.getProduct().getId();

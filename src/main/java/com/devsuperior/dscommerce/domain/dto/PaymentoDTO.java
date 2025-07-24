@@ -5,12 +5,12 @@ import java.time.Instant;
 import com.devsuperior.dscommerce.domain.entities.Payment;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 @AllArgsConstructor
-@Getter
+@Data
 public class PaymentoDTO {
-    
+
     private Long id;
     private Instant moment;
 
@@ -22,5 +22,5 @@ public class PaymentoDTO {
     public static PaymentoDTO from(Payment payment) {
         return new PaymentoDTO(payment);
     }
-    
+
 }
