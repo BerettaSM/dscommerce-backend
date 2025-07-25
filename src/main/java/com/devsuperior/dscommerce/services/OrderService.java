@@ -3,6 +3,8 @@ package com.devsuperior.dscommerce.services;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,12 @@ public class OrderService {
         return orderRepository.findById(id)
                 .map(OrderDTO::from)
                 .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderDTO> findAllByClientId(Long clientId, Pageable pageable) {
+        return orderRepository.findAllByClientId(clientId, pageable)
+                .map(OrderDTO::from);
     }
 
     @Transactional

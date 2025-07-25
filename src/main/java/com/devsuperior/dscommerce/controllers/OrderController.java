@@ -3,6 +3,8 @@ package com.devsuperior.dscommerce.controllers;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.devsuperior.dscommerce.domain.dto.OrderDTO;
 import com.devsuperior.dscommerce.domain.entities.User;
 import com.devsuperior.dscommerce.security.annotations.AdminOrSelf;
+import com.devsuperior.dscommerce.security.annotations.Authenticated;
 import com.devsuperior.dscommerce.security.annotations.ClientOnly;
 import com.devsuperior.dscommerce.services.OrderService;
 
@@ -30,6 +33,14 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @Authenticated
+    @GetMapping
+    public ResponseEntity<Page<OrderDTO>> findOwnOrders(
+            Pageable pageable,
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.findAllByClientId(user.getId(), pageable));
+    }
 
     @AdminOrSelf
     @GetMapping(path = "/{id}")
