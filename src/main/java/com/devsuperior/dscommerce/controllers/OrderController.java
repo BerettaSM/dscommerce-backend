@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.devsuperior.dscommerce.domain.dto.OrderDTO;
 import com.devsuperior.dscommerce.domain.entities.User;
-import com.devsuperior.dscommerce.security.annotations.AdminOnly;
+import com.devsuperior.dscommerce.security.annotations.AdminOrSelf;
 import com.devsuperior.dscommerce.security.annotations.ClientOnly;
 import com.devsuperior.dscommerce.services.OrderService;
 
@@ -31,7 +31,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @AdminOnly
+    @AdminOrSelf
     @GetMapping(path = "/{id}")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.findById(id));
