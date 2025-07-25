@@ -21,8 +21,8 @@ import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductService {
 
     private final CategoryRepository categoryRepository;
