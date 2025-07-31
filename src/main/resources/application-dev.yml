@@ -15,8 +15,8 @@ spring:
             # jakarta:
             #     persistence:
             #         schema-generation:
+            #             create-source: metadata
             #             scripts:
-            #                 create-source: metadata
             #                 action: create
             #                 create-target: create.sql
         hibernate:
