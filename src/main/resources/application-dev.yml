@@ -1,0 +1,23 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5433/dslist
+        username: postgres
+        password: 1234567   
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        properties:
+            hibernate:
+                jdbc:
+                    lob:
+                        '[non_contextual_creation]': true
+            #     hbm2ddl:
+            #         delimiter: ;
+            # jakarta:
+            #     persistence:
+            #         schema-generation:
+            #             scripts:
+            #                 create-source: metadata
+            #                 action: create
+            #                 create-target: create.sql
+        hibernate:
+            ddl-auto: none
